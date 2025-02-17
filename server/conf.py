@@ -29,8 +29,8 @@ def import_string(dotted_path):
         return getattr(module, class_name)
     except AttributeError as err:
         raise ImportError(
-            'Module "%s" does not define a "%s" attribute/class' %
-            (module_path, class_name)) from err
+            'Module "%s" does not define a "%s" attribute/class' % (module_path, class_name)
+        ) from err
 
 
 class DoesNotExist(Exception):
@@ -184,14 +184,12 @@ class Config(dict):
         'API_MODEL_MAP': {
             "/api/system/refresh": "Token刷新",
             "/api/flower": "定时任务",
-        }
+        },
     }
     defaults.update(base)
     defaults.update(libs)
     defaults.update(settings)
-    old_config_map = {
-
-    }
+    old_config_map = {}
 
     def __init__(self, *args):
         super().__init__(*args)
@@ -328,12 +326,10 @@ class ConfigManager:
             else:
                 mappings.append(mapping[0])
         elif len(mapping) > 1:
-            raise TypeError(
-                'expected at most 1 positional argument, got %d' % len(mapping)
-            )
+            raise TypeError('expected at most 1 positional argument, got %d' % len(mapping))
         mappings.append(kwargs.items())
         for mapping in mappings:
-            for (key, value) in mapping:
+            for key, value in mapping:
                 if key.isupper():
                     self.config[key] = value
         return True
@@ -341,7 +337,7 @@ class ConfigManager:
     def load_from_object(self):
         sys.path.insert(0, PROJECT_DIR)
         try:
-            from config import config as c
+            from config import config as c  # type: ignore
         except ImportError:
             return False
         if c:
